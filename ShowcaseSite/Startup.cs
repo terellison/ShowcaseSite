@@ -59,6 +59,7 @@ namespace ShowcaseSite
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseFileServer();
 
             app.UseRouting();
 
