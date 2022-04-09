@@ -1,0 +1,42 @@
+﻿@page "/PlayLove/{gameName}"
+@using System.Diagnostics
+@using System.Threading
+@inject NavigationManager NavManager
+
+<h1>Loading...</h1>
+
+@if(gameBuildFailed)
+{
+    <p>Sorry, building the game failed.</p>
+    <p>@errorMsg</p>
+}
+
+@code {
+
+    [Parameter]
+    public string GameName { get; set; }
+
+    private bool gameBuildFailed = false;
+
+    private string? errorMsg;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+
+        ProcessStartInfo startInfo = new ProcessStartInfo { FileName = "powershell.exe", Arguments = $"./build-love-game.ps1 {GameName}" };
+        Process gameBuildProc = new Process { StartInfo = startInfo };
+
+        gameBuildProc.Start();
+        await gameBuildProc.WaitForExitAsync();
+        
+        Thread.Sleep(5000);
+
+        if (gameBuildProc.ExitCode == 0)
+        {
+            NavManager.NavigateTo($"{GameName}/index.html");
+        }
+        else { gameBuildFailed = !gameBuildFailed; }
+    }
+
+}
