@@ -12,7 +12,7 @@ Welcome to your new app.
     protected override async Task OnInitializedAsync()
     {
         var spin = new SpinWait();
-        var startInfo = new ProcessStartInfo { FileName = "powershell", Arguments = @".\install-dependencies.ps1" };
+        var startInfo = new ProcessStartInfo { FileName = "powershell", Arguments = @"/scripts/install-dependencies.ps1" };
         Process p = new Process { StartInfo = startInfo };
         p.StartInfo.RedirectStandardOutput = true;
         p.Start();

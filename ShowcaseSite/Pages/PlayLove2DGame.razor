@@ -24,13 +24,13 @@
     {
         base.OnInitialized();
 
-        ProcessStartInfo startInfo = new ProcessStartInfo { FileName = "powershell.exe", Arguments = $"./build-love-game.ps1 {GameName}" };
+        ProcessStartInfo startInfo = new ProcessStartInfo { FileName = "powershell.exe", Arguments = $"/scripts/build-love-game.ps1 {GameName}" };
         Process gameBuildProc = new Process { StartInfo = startInfo };
 
         gameBuildProc.Start();
         await gameBuildProc.WaitForExitAsync();
         
-        Thread.Sleep(5000);
+        //Thread.Sleep(5000);
 
         if (gameBuildProc.ExitCode == 0)
         {
