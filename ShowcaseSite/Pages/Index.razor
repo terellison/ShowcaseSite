@@ -16,11 +16,13 @@ Welcome to your new app.
         Process p = new Process { StartInfo = startInfo };
         p.StartInfo.RedirectStandardOutput = true;
         p.Start();
+        var output = "";
         while(!p.HasExited)
         {
-            Console.WriteLine(p.StandardOutput.ReadToEnd());
+            output += p.StandardOutput.ReadToEnd();
             spin.SpinOnce();
         };
+        Console.WriteLine(output);
     }
     
 }
