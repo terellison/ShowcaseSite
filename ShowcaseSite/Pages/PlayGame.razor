@@ -1,0 +1,59 @@
+﻿@page "/PlayGame/{gameName}/{engineName}"
+@using System.Diagnostics
+@using System.Threading
+@using System.IO
+@using ShowcaseSite.Data
+@using ShowcaseSite.Interfaces
+@inject NavigationManager NavManager
+
+<h1> @gameName will be ready in @counter second(s)...</h1>
+
+@if(gameBuildFailed)
+{
+    <p>Sorry, building the game failed.</p>
+    <p>@errorMsg</p>
+}
+
+@code {
+
+    [Parameter]
+    public string gameName { get; set; }
+
+    [Parameter]
+    public string engineName { get; set; }
+
+    private bool gameBuildFailed = false;
+
+    private string? errorMsg;
+
+    private readonly int GAME_LOAD_TIME = 5;
+
+    private int counter;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+
+        IGameBuilder gameBuilder;
+
+        var engine = Enum.Parse(typeof(GameEngine), engineName);
+
+        var typeName = $"ShowcaseSite.Data.{engine}GameBuilder";
+
+        gameBuilder = (IGameBuilder)Activator.CreateInstance
+            (Type.GetType(typeName));
+
+        gameBuilder.BuildGame(gameName);
+
+        counter = GAME_LOAD_TIME;
+
+        for(; counter > 0; --counter)
+        {
+            Thread.Sleep(1000);
+        }
+
+        NavManager.NavigateTo($"{gameName}/index.html");
+
+    }
+
+}

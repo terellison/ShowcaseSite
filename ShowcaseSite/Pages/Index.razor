@@ -6,23 +6,5 @@
 
 Welcome to your new app.
 
-<p>Play your game <a href="PlayLove/pong2d">here</a></p>
+<p>Play your game <a href="PlayGame/pong2d/Love2D">here</a></p>
 
-@code {
-    protected override async Task OnInitializedAsync()
-    {
-        var spin = new SpinWait();
-        var startInfo = new ProcessStartInfo { FileName = "powershell", Arguments = @"/scripts/install-dependencies.ps1" };
-        Process p = new Process { StartInfo = startInfo };
-        p.StartInfo.RedirectStandardOutput = true;
-        p.Start();
-        var output = "";
-        while(!p.HasExited)
-        {
-            output += p.StandardOutput.ReadToEnd();
-            spin.SpinOnce();
-        };
-        Console.WriteLine(output);
-    }
-    
-}
